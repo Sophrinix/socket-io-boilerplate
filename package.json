@@ -1,0 +1,19 @@
+{
+  "name": "socket.io-chat-demo",
+  "version": "0.0.1",
+  "description": "A demo showing how to use socket.io for realtime interactions.",
+  "main": "./server.js",
+  "scripts": {},
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-express": "~0.2.0",
+    "grunt-regarde": "~0.1.1"
+  },
+  "dependencies": {
+    "express": "~3.1.0",
+    "socket.io": "~0.9.13",
+    "grunt-contrib-livereload": "~0.1.2",
+    "consolidate": "~0.8.0",
+    "dustjs-linkedin": "~1.2.1"
+  }
+}
