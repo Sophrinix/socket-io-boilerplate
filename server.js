@@ -14,8 +14,37 @@ app.use( express.static(__dirname + '/public'));
 app.use(require('grunt-contrib-livereload/lib/utils').livereloadSnippet);
 
 // This is where the fun will take place
-io.sockets.on('connection', function () {
-    console.log('connected');
+io.sockets.on('connection', function (socket) {
+    function getUser (data, done) {
+        socket.get('user-data', function (err, user) {
+            if (user) {
+                done(user);
+            } else {
+                socket.set('user-data', {
+                    userId: new Date().getTime()
+                }, function () {
+                    socket.get('user-data', function (err, user) {
+                        socket.broadcast.emit('user.joined', {
+                            message: data.name + ' has joined!'
+                        });
+                        done(user);
+                    });
+                });
+            }
+        });
+    }
+    socket.emit('chat.render', {
+        name: 'Chat Bot',
+        message: 'Welcome to the NashJS chat room',
+        userId: 11110000
+    });
+    socket.on('chat.post', function (data, done) {
+        getUser(data, function (user) {
+            data.userId = user.userId;
+            io.sockets.emit('chat.render', data);
+            done('Your message was posted.');
+        });
+    });
 });
 
 // Don't worry about this... it's just exporting the
